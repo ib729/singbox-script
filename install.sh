@@ -1,6 +1,6 @@
 #!/bin/bash
 
-author=ib729
+author=233boy
 # github=https://github.com/ib729/singbox-script
 
 # bash fonts colors
@@ -184,12 +184,20 @@ download() {
         msg warn "Downloading ${name} > ${link}"
         if _wget -t 3 -q -c $link -O $tmpfile; then
             mv -f $tmpfile $is_ok
-        elif [[ $1 == "sh" ]]; then
-            link=https://github.com/${is_sh_repo}/archive/refs/heads/main.tar.gz
-            msg warn "Fallback download ${name} > ${link}"
-            if _wget -t 3 -q -c $link -O $tmpfile; then
-                mv -f $tmpfile $is_ok
-                is_sh_archive=1
+        else
+            if [[ $1 == "core" ]]; then
+                link="https://ghproxy.com/${link}"
+                msg warn "Fallback download ${name} > ${link}"
+                if _wget -t 3 -q -c $link -O $tmpfile; then
+                    mv -f $tmpfile $is_ok
+                fi
+            elif [[ $1 == "sh" ]]; then
+                link=https://github.com/${is_sh_repo}/archive/refs/heads/main.tar.gz
+                msg warn "Fallback download ${name} > ${link}"
+                if _wget -t 3 -q -c $link -O $tmpfile; then
+                    mv -f $tmpfile $is_ok
+                    is_sh_archive=1
+                fi
             fi
         fi
     }

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-author=ib729
+author=233boy
 # github=https://github.com/ib729/singbox-script
 
 # bash fonts colors
