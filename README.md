@@ -55,7 +55,7 @@ bash <(wget -qO- -o- https://github.com/ib729/singbox-script/raw/main/install.sh
 Or use the original Chinese version:
 
 ```bash
-bash <(wget -qO- -o- https://github.com/233boy/sing-box/raw/main/install.sh)
+bash <(wget -qO- -o- https://github.com/ib729/singbox-script/raw/main/install.sh)
 ```
 
 **Installation Options:**
@@ -171,10 +171,12 @@ Use `del` and `ddel` with caution. These options delete configurations directly 
 
 ## Links
 
-- **English Repository:** https://github.com/ib729/singbox-script
-- **Original (Chinese) Repository:** https://github.com/233boy/sing-box
+- **Repository:** https://github.com/ib729/singbox-script
+- **Documentation:** https://github.com/ib729/singbox-script/blob/main/docs/sing-box-script-en.md
+- **DNS Guide:** https://github.com/ib729/singbox-script/blob/main/docs/sing-box-dns-en.md
+- **Direct (Relay) Guide:** https://github.com/ib729/singbox-script/blob/main/docs/sing-box-direct-en.md
+- **Automatic TLS Guide:** https://github.com/ib729/singbox-script/blob/main/docs/sing-box-caddy-auto-tls-en.md
 - **Official sing-box:** https://sing-box.sagernet.org/
-- **Original (Chinese) Documentation:** https://233boy.com/sing-box/sing-box-script/
 
 ## Acknowledgements
 

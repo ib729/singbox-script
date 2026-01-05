@@ -935,7 +935,7 @@ add() {
                 get_port
                 is_https_port=$tmp_port
                 warn "Port (80 or 443) is already in use, you can also use no-auto-tls"
-                msg "\e[41m no-auto-tls help\e[0m: $(msg_ul https://233boy.com/$is_core/no-auto-tls/)\n"
+                msg "\e[41m no-auto-tls help\e[0m: $(msg_ul https://github.com/ib729/singbox-script/blob/main/docs/sing-box-script-en.md#no-auto-tls)\n"
                 msg "\n Caddy will use non-standard ports for auto TLS, HTTP:$is_http_port HTTPS:$is_https_port\n"
                 msg "Are you sure to continue???"
                 pause
@@ -1377,7 +1377,7 @@ info() {
         msg "$a $tt= \e[${is_color}m${is_info_str[$i]}\e[0m"
     done
     if [[ $is_new_install ]]; then
-        warn "For first install, see script help doc: $(msg_ul https://233boy.com/$is_core/$is_core-script/)"
+        warn "For first install, see script help doc: $(msg_ul https://github.com/ib729/singbox-script/blob/main/docs/sing-box-script-en.md)"
     fi
     if [[ $is_url ]]; then
         msg "------------- ${info_list[12]} -------------"
@@ -1390,7 +1390,7 @@ info() {
         msg "------------- no-auto-tls INFO -------------"
         msg "Port: $port"
         msg "Path: $path"
-        msg "\e[41mHelp\e[0m: $(msg_ul https://233boy.com/$is_core/no-auto-tls/)"
+        msg "\e[41mHelp\e[0m: $(msg_ul https://github.com/ib729/singbox-script/blob/main/docs/sing-box-script-en.md#no-auto-tls)"
     fi
     footer_msg
 }
@@ -1495,7 +1495,6 @@ update() {
 is_main_menu() {
     msg "\n------------- $is_core_name script by $author -------------"
     msg "$is_core_name $is_core_ver: $is_core_status"
-    msg "Group (Chat): $(msg_ul https://t.me/tg233boy)"
     is_main_start=1
     ask mainmenu
     case $REPLY in

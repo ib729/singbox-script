@@ -5,7 +5,7 @@ caddy_config() {
         mkdir -p $is_caddy_dir $is_caddy_dir/sites $is_caddy_conf
         cat >$is_caddyfile <<-EOF
 # don't edit this file #
-# for more info, see https://233boy.com/$is_core/caddy-auto-tls/
+# for more info, see https://github.com/ib729/singbox-script/blob/main/docs/sing-box-caddy-auto-tls-en.md
 # https://caddyserver.com/docs/caddyfile/options
 {
   admin off
@@ -50,6 +50,6 @@ reverse_proxy https://$proxy_site {
         ;;
     esac
     [[ $1 != "new" && $1 != 'proxy' ]] && {
-        [[ ! -f ${is_caddy_site_file}.add ]] && echo "# see https://233boy.com/$is_core/caddy-auto-tls/" >${is_caddy_site_file}.add
+        [[ ! -f ${is_caddy_site_file}.add ]] && echo "# see https://github.com/ib729/singbox-script/blob/main/docs/sing-box-caddy-auto-tls-en.md" >${is_caddy_site_file}.add
     }
 }

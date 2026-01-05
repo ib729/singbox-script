@@ -72,7 +72,7 @@ show_help() {
         done
         msg "Use del, ddel with caution. These options delete configurations directly without confirmation"
         msg "Report issues) $(msg_ul https://github.com/${is_sh_repo}/issues) "
-        msg "Documentation) $(msg_ul https://233boy.com/$is_core/$is_core-script/)"
+        msg "Documentation) $(msg_ul https://github.com/ib729/singbox-script/blob/main/docs/sing-box-script-en.md)"
         ;;
 
     esac
@@ -81,11 +81,11 @@ show_help() {
 about() {
     unset c n m s b
     msg
-    msg "Website: $(msg_ul https://233boy.com)"
-    msg "Channel: $(msg_ul https://t.me/tg2333)"
-    msg "Group: $(msg_ul https://t.me/tg233boy)"
+    msg "Website: $(msg_ul https://github.com/ib729/singbox-script)"
+    msg "Channel: $(msg_ul https://github.com/ib729/singbox-script)"
+    msg "Group: $(msg_ul https://github.com/ib729/singbox-script)"
     msg "Github: $(msg_ul https://github.com/${is_sh_repo})"
-    msg "Twitter: $(msg_ul https://twitter.com/ai233boy)"
+    msg "Twitter: $(msg_ul https://github.com/ib729)"
     msg "$is_core_name site: $(msg_ul https://sing-box.sagernet.org/)"
     msg "$is_core_name core: $(msg_ul https://github.com/${is_core_repo})"
     msg
