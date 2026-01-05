@@ -44,6 +44,13 @@ The script's parameters are very efficient and super easy to use, please master 
 
 ## Quick Start
 
+## Documentation
+
+- https://github.com/ib729/singbox-script/blob/main/docs/sing-box-script-en.md
+- https://github.com/ib729/singbox-script/blob/main/docs/sing-box-dns-en.md
+- https://github.com/ib729/singbox-script/blob/main/docs/sing-box-direct-en.md
+- https://github.com/ib729/singbox-script/blob/main/docs/sing-box-caddy-auto-tls-en.md
+
 ### Installation
 
 Execute this command to install (English version):
@@ -172,10 +179,6 @@ Use `del` and `ddel` with caution. These options delete configurations directly 
 ## Links
 
 - **Repository:** https://github.com/ib729/singbox-script
-- **Documentation:** https://github.com/ib729/singbox-script/blob/main/docs/sing-box-script-en.md
-- **DNS Guide:** https://github.com/ib729/singbox-script/blob/main/docs/sing-box-dns-en.md
-- **Direct (Relay) Guide:** https://github.com/ib729/singbox-script/blob/main/docs/sing-box-direct-en.md
-- **Automatic TLS Guide:** https://github.com/ib729/singbox-script/blob/main/docs/sing-box-caddy-auto-tls-en.md
 - **Official sing-box:** https://sing-box.sagernet.org/
 
 ## Acknowledgements
