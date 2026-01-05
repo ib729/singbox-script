@@ -68,7 +68,7 @@ is_conf_dir=$is_core_dir/conf
 is_log_dir=/var/log/$is_core
 is_sh_bin=/usr/local/bin/$is_core
 is_sh_dir=$is_core_dir/sh
-is_sh_repo=$author/$is_core
+is_sh_repo=ib729/singbox-script
 is_pkg="wget tar"
 is_config_json=$is_core_dir/config.json
 tmp_var_lists=(
@@ -80,6 +80,7 @@ tmp_var_lists=(
     is_jq_ok
     is_pkg_ok
 )
+is_sh_archive=
 
 # tmp dir
 tmpdir=$(mktemp -u)
@@ -183,6 +184,13 @@ download() {
         msg warn "Downloading ${name} > ${link}"
         if _wget -t 3 -q -c $link -O $tmpfile; then
             mv -f $tmpfile $is_ok
+        elif [[ $1 == "sh" ]]; then
+            link=https://github.com/${is_sh_repo}/archive/refs/heads/main.tar.gz
+            msg warn "Fallback download ${name} > ${link}"
+            if _wget -t 3 -q -c $link -O $tmpfile; then
+                mv -f $tmpfile $is_ok
+                is_sh_archive=1
+            fi
         fi
     }
 }
@@ -384,7 +392,11 @@ main() {
     if [[ $local_install ]]; then
         cp -rf $PWD/* $is_sh_dir
     else
-        tar zxf $is_sh_ok -C $is_sh_dir
+        if [[ $is_sh_archive ]]; then
+            tar zxf $is_sh_ok --strip-components 1 -C $is_sh_dir
+        else
+            tar zxf $is_sh_ok -C $is_sh_dir
+        fi
     fi
 
     # create core bin dir
