@@ -395,16 +395,20 @@ main() {
         if [[ $is_sh_archive ]]; then
             is_sh_unpack_dir=$tmpdir/sh-unpack
             mkdir -p $is_sh_unpack_dir
-            tar zxf $is_sh_ok -C $is_sh_unpack_dir
-            is_sh_root=$(find $is_sh_unpack_dir -mindepth 1 -maxdepth 1 -type d | head -n1)
-            [[ ! $is_sh_root ]] && err "Failed to extract script archive"
-            cp -rf $is_sh_root/* $is_sh_dir
+            is_sh_tar_list=$(tar ztf $is_sh_ok 2>/dev/null)
+            [[ ! $is_sh_tar_list ]] && err "Failed to read script archive; download may be blocked"
+            is_sh_root=$(echo "$is_sh_tar_list" | head -n1 | cut -d/ -f1)
+            [[ ! $is_sh_root ]] && err "Failed to detect script archive root"
+            tar zxf $is_sh_ok -C $is_sh_unpack_dir || err "Failed to extract script archive"
+            is_sh_root_dir=$is_sh_unpack_dir/$is_sh_root
+            [[ ! -d $is_sh_root_dir ]] && err "Failed to extract script archive"
+            cp -rf $is_sh_root_dir/. $is_sh_dir
         else
             tar zxf $is_sh_ok -C $is_sh_dir
         fi
     fi
     [[ ! -f $is_sh_dir/src/core.sh || ! -f $is_sh_dir/src/systemd.sh ]] && {
-        err "Script files missing after extraction"
+        err "Script files missing after extraction (src/core.sh, src/systemd.sh)"
     }
 
     # create core bin dir
