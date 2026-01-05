@@ -43,8 +43,9 @@ cmd=$(type -P apt-get || type -P yum)
     err "This system lacks systemctl. Try executing: ${cmd} update -y; ${cmd} install systemd -y to fix this error"
 }
 
-# wget installed or none
+# downloader
 is_wget=$(type -P wget)
+is_curl=$(type -P curl)
 
 # x64
 case $(uname -m) in
@@ -69,7 +70,7 @@ is_log_dir=/var/log/$is_core
 is_sh_bin=/usr/local/bin/$is_core
 is_sh_dir=$is_core_dir/sh
 is_sh_repo=ib729/singbox-script
-is_pkg="wget tar"
+is_pkg="wget tar curl"
 is_config_json=$is_core_dir/config.json
 tmp_var_lists=(
     tmpcore
@@ -102,6 +103,23 @@ load() {
 _wget() {
     [[ $proxy ]] && export https_proxy=$proxy
     wget --no-check-certificate $*
+}
+
+_curl() {
+    [[ $proxy ]] && export https_proxy=$proxy
+    curl -fsSL -k "$@"
+}
+
+download_file() {
+    local url=$1
+    local out=$2
+    if [[ $is_curl ]]; then
+        _curl "$url" -o "$out"
+    elif [[ $is_wget ]]; then
+        _wget -t 3 -q -c "$url" -O "$out"
+    else
+        return 1
+    fi
 }
 
 # print a mesage
@@ -182,20 +200,20 @@ download() {
 
     [[ $link ]] && {
         msg warn "Downloading ${name} > ${link}"
-        if _wget -t 3 -q -c $link -O $tmpfile; then
-            mv -f $tmpfile $is_ok
+        if download_file "$link" "$tmpfile"; then
+            mv -f "$tmpfile" "$is_ok"
         else
             if [[ $1 == "core" ]]; then
                 link="https://ghproxy.com/${link}"
                 msg warn "Fallback download ${name} > ${link}"
-                if _wget -t 3 -q -c $link -O $tmpfile; then
-                    mv -f $tmpfile $is_ok
+                if download_file "$link" "$tmpfile"; then
+                    mv -f "$tmpfile" "$is_ok"
                 fi
             elif [[ $1 == "sh" ]]; then
                 link=https://github.com/${is_sh_repo}/archive/refs/heads/main.tar.gz
                 msg warn "Fallback download ${name} > ${link}"
-                if _wget -t 3 -q -c $link -O $tmpfile; then
-                    mv -f $tmpfile $is_ok
+                if download_file "$link" "$tmpfile"; then
+                    mv -f "$tmpfile" "$is_ok"
                     is_sh_archive=1
                 fi
             fi
@@ -219,7 +237,7 @@ check_status() {
     }
 
     # download file status
-    if [[ $is_wget ]]; then
+    if [[ $is_wget || $is_curl ]]; then
         [[ ! -f $is_core_ok ]] && {
             msg err "Failed to download ${is_core_name}"
             is_fail=1
@@ -351,7 +369,7 @@ main() {
     }
 
     # install dependent pkg
-    install_pkg $is_pkg &
+    install_pkg $is_pkg
 
     # jq
     if [[ $(type -P jq) ]]; then
@@ -359,8 +377,10 @@ main() {
     else
         jq_not_found=1
     fi
+    is_wget=$(type -P wget)
+    is_curl=$(type -P curl)
     # if wget installed. download core, sh, jq, get ip
-    [[ $is_wget ]] && {
+    [[ $is_wget || $is_curl ]] && {
         [[ ! $is_core_file ]] && download core &
         [[ ! $local_install ]] && download sh &
         [[ $jq_not_found ]] && download jq &
