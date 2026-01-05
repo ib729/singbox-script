@@ -1415,7 +1415,6 @@ url_qr() {
             msg "\n\e[${is_color}m${is_url}\e[0m\n"
             footer_msg
         } || {
-            link="https://233boy.github.io/tools/qr.html#${is_url}"
             msg "\n------------- $is_config_name & QR code -------------"
             msg
             if [[ $(type -P qrencode) ]]; then
@@ -1424,8 +1423,6 @@ url_qr() {
                 msg "Please install qrencode: $(_green "$cmd update -y; $cmd install qrencode -y")"
             fi
             msg
-            msg "If it doesn't display or scan properly, use the link below to generate the QR code:"
-            msg "\n\e[4;${is_color}m${link}\e[0m\n"
             footer_msg
         }
     else
@@ -1449,7 +1446,7 @@ update() {
     2 | sh)
         is_update_name=sh
         is_show_name="$is_core_name script"
-        is_run_ver=$is_sh_ver
+        is_run_ver=main
         is_update_repo=$is_sh_repo
         ;;
     3 | caddy)
@@ -1463,6 +1460,7 @@ update() {
         err "Unrecognized ($1), use: $is_core update [core | sh | caddy] [ver]"
         ;;
     esac
+    load download.sh
     if [[ $is_update_name == "sh" ]]; then
         [[ $2 && $2 != "main" ]] && err "Script update uses the main branch; omit the version."
         is_new_ver="main"
@@ -1476,7 +1474,6 @@ update() {
         msg "\nCustom version matches current $is_show_name version, no update needed.\n"
         exit
     }
-    load download.sh
     if [[ $is_new_ver ]]; then
         msg "\nUpdate $is_show_name using custom version: $(_green $is_new_ver)\n"
     else
@@ -1496,7 +1493,7 @@ update() {
 
 # main menu; if no prefer args.
 is_main_menu() {
-    msg "\n------------- $is_core_name script $is_sh_ver by $author -------------"
+    msg "\n------------- $is_core_name script by $author -------------"
     msg "$is_core_name $is_core_ver: $is_core_status"
     msg "Group (Chat): $(msg_ul https://t.me/tg233boy)"
     is_main_start=1
@@ -1705,7 +1702,7 @@ main() {
         ;;
     v | ver | version)
         [[ $is_caddy_ver ]] && is_caddy_ver="/ $(_blue Caddy $is_caddy_ver)"
-        msg "\n$(_green $is_core_name $is_core_ver) / $(_cyan $is_core_name script $is_sh_ver) $is_caddy_ver\n"
+        msg "\n$(_green $is_core_name $is_core_ver) $is_caddy_ver\n"
         ;;
     h | help | --help)
         load help.sh

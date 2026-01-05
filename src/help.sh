@@ -5,7 +5,7 @@ show_help() {
         ;;
     *)
         [[ $1 ]] && warn "Unknown option '$1'"
-        msg "$is_core_name script $is_sh_ver by $author"
+        msg "$is_core_name script by $author"
         msg "Usage: $is_core [options]... [args]... "
         msg
         help_info=(

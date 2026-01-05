@@ -245,13 +245,6 @@ download() {
                 if download_file "$link" "$tmpfile"; then
                     mv -f "$tmpfile" "$is_ok"
                 fi
-            elif [[ $1 == "sh" ]]; then
-                link=https://github.com/${is_sh_repo}/archive/refs/heads/main.tar.gz
-                msg warn "Fallback download ${name} > ${link}"
-                if download_file "$link" "$tmpfile"; then
-                    mv -f "$tmpfile" "$is_ok"
-                    is_sh_archive=1
-                fi
             fi
         fi
     }
