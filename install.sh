@@ -122,6 +122,21 @@ download_file() {
     fi
 }
 
+download_raw_scripts() {
+    local base="https://raw.githubusercontent.com/${is_sh_repo}/main"
+    local ok=1
+    mkdir -p "$is_sh_dir/src"
+
+    download_file "$base/sing-box.sh" "$is_sh_dir/sing-box.sh" || ok=
+    download_file "$base/install.sh" "$is_sh_dir/install.sh" || ok=
+
+    for f in bbr.sh caddy.sh core.sh dns.sh download.sh help.sh import.sh init.sh log.sh systemd.sh; do
+        download_file "$base/src/$f" "$is_sh_dir/src/$f" || ok=
+    done
+
+    [[ $ok ]] || return 1
+}
+
 # print a mesage
 msg() {
     case $1 in
@@ -467,6 +482,10 @@ main() {
         else
             tar zxf $is_sh_ok -C $is_sh_dir
         fi
+    fi
+    if [[ ! -f $is_sh_dir/src/core.sh || ! -f $is_sh_dir/src/systemd.sh ]]; then
+        msg warn "Script files missing after extraction, attempting raw download"
+        download_raw_scripts || true
     fi
     [[ ! -f $is_sh_dir/src/core.sh || ! -f $is_sh_dir/src/systemd.sh ]] && {
         err "Script files missing after extraction (src/core.sh, src/systemd.sh)"
