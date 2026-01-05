@@ -174,11 +174,31 @@ install_pkg() {
     fi
 }
 
+# get latest core version
+get_core_latest_ver() {
+    local tag
+    if [[ $is_curl ]]; then
+        tag=$(_curl -I -o /dev/null -w '%{url_effective}' "https://github.com/${is_core_repo}/releases/latest" 2>/dev/null | sed -n 's#.*/tag/##p')
+    fi
+    if [[ ! $tag && $is_wget ]]; then
+        tag=$(wget -q --server-response --max-redirect=0 "https://github.com/${is_core_repo}/releases/latest" 2>&1 | sed -n 's/.*[Ll]ocation: .*\\/tag\\/\\([^\\r]*\\).*/\\1/p' | head -n1)
+    fi
+    if [[ ! $tag ]]; then
+        if [[ $is_curl ]]; then
+            tag=$(_curl "https://api.github.com/repos/${is_core_repo}/releases/latest?v=$RANDOM" 2>/dev/null | sed -n 's/.*\"tag_name\": \"\\(v[0-9.]*\\)\".*/\\1/p' | head -n1)
+        elif [[ $is_wget ]]; then
+            tag=$(_wget -qO- "https://api.github.com/repos/${is_core_repo}/releases/latest?v=$RANDOM" | sed -n 's/.*\"tag_name\": \"\\(v[0-9.]*\\)\".*/\\1/p' | head -n1)
+        fi
+    fi
+    echo "$tag"
+}
+
 # download file
 download() {
     case $1 in
     core)
-        [[ ! $is_core_ver ]] && is_core_ver=$(_wget -qO- "https://api.github.com/repos/${is_core_repo}/releases/latest?v=$RANDOM" | grep tag_name | grep -E -o 'v([0-9.]+)')
+        [[ ! $is_core_ver ]] && is_core_ver=$(get_core_latest_ver)
+        [[ ! $is_core_ver ]] && err "Failed to get ${is_core_name} version from GitHub"
         [[ $is_core_ver ]] && link="https://github.com/${is_core_repo}/releases/download/${is_core_ver}/${is_core}-${is_core_ver:1}-linux-${is_arch}.tar.gz"
         name=$is_core_name
         tmpfile=$tmpcore
