@@ -1402,9 +1402,6 @@ footer_msg() {
     ####### For people who only change my links #######
     unset c n m s b
     msg "------------- END -------------"
-    msg "Follow (tg): $(msg_ul https://t.me/tg2333)"
-    msg "Docs: $(msg_ul https://233boy.com/$is_core/$is_core-script/)"
-    msg "Promo (ads): Recommended $is_core_name services: $(msg_ul https://g${c}e${n}t${m}j${s}m${b}s.com/)\n"
     ####### For people who only change my links #######
 }
 

@@ -6,7 +6,8 @@ get_latest_version() {
         ;;
     sh)
         name="$is_core_name script"
-        url="https://api.github.com/repos/$is_sh_repo/releases/latest?v=$RANDOM"
+        latest_ver=main
+        return
         ;;
     caddy)
         name="Caddy"
@@ -40,9 +41,21 @@ download() {
     sh)
         name="$is_core_name script"
         tmpfile=$tmpdir/sh.tar.gz
-        link="https://github.com/${is_sh_repo}/releases/download/${latest_ver}/code.tar.gz"
+        link="https://github.com/${is_sh_repo}/archive/refs/heads/main.tar.gz"
         download_file
-        tar zxf $tmpfile -C $is_sh_dir
+        is_sh_unpack_dir=$tmpdir/sh-unpack
+        mkdir -p $is_sh_unpack_dir
+        tar zxf $tmpfile -C $is_sh_unpack_dir || err "\nFailed to extract ${name}\n"
+        is_sh_root_dir=
+        if type -P find >/dev/null 2>&1; then
+            is_sh_detect_core=$(find "$is_sh_unpack_dir" -type f -path "*/src/core.sh" -print -quit 2>/dev/null)
+            [[ $is_sh_detect_core ]] && is_sh_root_dir=${is_sh_detect_core%/src/core.sh}
+        fi
+        if [[ ! $is_sh_root_dir ]]; then
+            is_sh_root_dir=$(find "$is_sh_unpack_dir" -mindepth 1 -maxdepth 1 -type d 2>/dev/null | head -n1)
+        fi
+        [[ ! $is_sh_root_dir ]] && err "\nFailed to extract ${name}\n"
+        cp -rf $is_sh_root_dir/. $is_sh_dir
         chmod +x $is_sh_bin ${is_sh_bin/$is_core/sb}
         ;;
     caddy)

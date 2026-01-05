@@ -220,10 +220,11 @@ download() {
         is_ok=$is_core_ok
         ;;
     sh)
-        link=https://github.com/${is_sh_repo}/releases/latest/download/code.tar.gz
+        link=https://github.com/${is_sh_repo}/archive/refs/heads/main.tar.gz
         name="$is_core_name script"
         tmpfile=$tmpsh
         is_ok=$is_sh_ok
+        is_sh_archive=1
         ;;
     jq)
         link=https://github.com/jqlang/jq/releases/download/jq-1.7.1/jq-linux-$is_arch
