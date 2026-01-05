@@ -1,7 +1,7 @@
 #!/bin/bash
 
 author=ib729
-# github=https://github.com/233boy/sing-box
+# github=https://github.com/ib729/singbox-script
 
 # bash fonts colors
 red='\e[31m'

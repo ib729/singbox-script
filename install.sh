@@ -1,7 +1,7 @@
 #!/bin/bash
 
 author=ib729
-# github=https://github.com/233boy/sing-box
+# github=https://github.com/ib729/singbox-script
 
 # bash fonts colors
 red='\e[31m'
@@ -395,19 +395,26 @@ main() {
         if [[ $is_sh_archive ]]; then
             is_sh_unpack_dir=$tmpdir/sh-unpack
             mkdir -p $is_sh_unpack_dir
-            is_sh_tar_list=$(tar ztf $is_sh_ok 2>/dev/null)
-            [[ ! $is_sh_tar_list ]] && err "Failed to read script archive; download may be blocked"
-            is_sh_root=$(echo "$is_sh_tar_list" | awk -F/ '{gsub(/^\\.\\//,"",$0); if ($1 != "" && $1 != ".") {print $1; exit}}')
-            [[ ! $is_sh_root ]] && err "Failed to detect script archive root"
             tar zxf $is_sh_ok -C $is_sh_unpack_dir || err "Failed to extract script archive"
-            is_sh_root_dir=$is_sh_unpack_dir/$is_sh_root
-            [[ ! -d $is_sh_root_dir ]] && err "Failed to extract script archive"
-            is_sh_detect_core=$(find $is_sh_unpack_dir -type f -name core.sh 2>/dev/null | awk '/\\/src\\/core\\.sh$/{print; exit}')
-            if [[ $is_sh_detect_core ]]; then
-                is_sh_detect_root=${is_sh_detect_core%/src/core.sh}
-            else
-                is_sh_detect_root=$is_sh_root_dir
+
+            is_sh_detect_root=
+            if type -P find >/dev/null 2>&1; then
+                is_sh_detect_core=$(find "$is_sh_unpack_dir" -type f -path "*/src/core.sh" -print -quit 2>/dev/null)
+                [[ $is_sh_detect_core ]] && is_sh_detect_root=${is_sh_detect_core%/src/core.sh}
             fi
+
+            if [[ ! $is_sh_detect_root ]]; then
+                is_sh_tar_list=$(tar ztf $is_sh_ok 2>/dev/null)
+                [[ ! $is_sh_tar_list ]] && err "Failed to read script archive; download may be blocked"
+                is_sh_root=$(echo "$is_sh_tar_list" | sed 's#^\\./##' | awk -F/ '/\\/src\\/core\\.sh$/{sub(/\\/src\\/core\\.sh$/, "", $0); print $0; exit}')
+                if [[ ! $is_sh_root ]]; then
+                    is_sh_root=$(echo "$is_sh_tar_list" | sed 's#^\\./##' | awk -F/ '{if ($1 != "" && $1 != ".") {print $1; exit}}')
+                fi
+                [[ ! $is_sh_root ]] && err "Failed to detect script archive root"
+                is_sh_detect_root=$is_sh_unpack_dir/$is_sh_root
+            fi
+
+            [[ ! -d $is_sh_detect_root ]] && err "Failed to extract script archive"
             cp -rf $is_sh_detect_root/. $is_sh_dir
         else
             tar zxf $is_sh_ok -C $is_sh_dir
