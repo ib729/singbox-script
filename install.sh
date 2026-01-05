@@ -1,6 +1,6 @@
 #!/bin/bash
 
-author=233boy
+author=ib729
 # github=https://github.com/233boy/sing-box
 
 # bash fonts colors
@@ -393,11 +393,19 @@ main() {
         cp -rf $PWD/* $is_sh_dir
     else
         if [[ $is_sh_archive ]]; then
-            tar zxf $is_sh_ok --strip-components 1 -C $is_sh_dir
+            is_sh_unpack_dir=$tmpdir/sh-unpack
+            mkdir -p $is_sh_unpack_dir
+            tar zxf $is_sh_ok -C $is_sh_unpack_dir
+            is_sh_root=$(find $is_sh_unpack_dir -mindepth 1 -maxdepth 1 -type d | head -n1)
+            [[ ! $is_sh_root ]] && err "Failed to extract script archive"
+            cp -rf $is_sh_root/* $is_sh_dir
         else
             tar zxf $is_sh_ok -C $is_sh_dir
         fi
     fi
+    [[ ! -f $is_sh_dir/src/core.sh || ! -f $is_sh_dir/src/systemd.sh ]] && {
+        err "Script files missing after extraction"
+    }
 
     # create core bin dir
     mkdir -p $is_core_dir/bin
