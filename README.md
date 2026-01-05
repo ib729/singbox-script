@@ -1,10 +1,10 @@
 # 233boy's sing-box Script
 
-# Introduction
+## Introduction
 
-The best sing-box one-click installation & management script
+The best sing-box one-click installation & management script now in English.
 
-# Features
+## Features
 
 - Quick installation
 - Incredibly easy to use
@@ -28,7 +28,7 @@ The best sing-box one-click installation & management script
 - One-click change (port/UUID/password/domain/path/encryption method/SNI/etc...)
 - And more...
 
-# Design Philosophy
+## Design Philosophy
 
 Design philosophy: **High efficiency, ultra-fast, extremely easy to use**
 
@@ -42,11 +42,65 @@ For example, adding a configuration takes less than 1 second! Instant completion
 
 The script's parameters are very efficient and super easy to use, please master the use of parameters
 
-# Documentation
+## Quick Start
 
-Installation and usage: https://233boy.com/sing-box/sing-box-script/
+### Installation
 
-# Help
+Execute this command to install (English version):
+
+```bash
+bash <(wget -qO- -o- https://github.com/ib729/singbox-script/raw/main/install.sh)
+```
+
+Or use the original Chinese version:
+
+```bash
+bash <(wget -qO- -o- https://github.com/233boy/sing-box/raw/main/install.sh)
+```
+
+**Installation Options:**
+- `-f <path>` - Custom sing-box file path
+- `-l` - Local installation (use current directory)
+- `-p <proxy>` - Use proxy for download (e.g., `-p http://127.0.0.1:2333`)
+- `-v <version>` - Custom sing-box version (e.g., `-v v1.8.13`)
+- `-h` - Show help
+
+### Basic Usage
+
+After installation, use `sing-box` or `sb` to access the management interface:
+
+```bash
+sing-box          # Interactive menu
+sing-box help     # Show help
+```
+
+**Common Commands:**
+
+```bash
+# Add configuration
+sing-box add reality           # Add VLESS-REALITY (default)
+sing-box add hysteria2         # Add Hysteria2
+sing-box add trojan            # Add Trojan
+
+# View configuration
+sing-box info [name]           # View specific config
+sing-box qr [name]             # Show QR code
+sing-box url [name]            # Show URL
+
+# Modify configuration
+sing-box change [name] port 8443           # Change port
+sing-box change [name] uuid auto           # Auto-generate new UUID
+sing-box change [name] path /newpath       # Change path
+
+# Management
+sing-box status                # Check status
+sing-box start                 # Start service
+sing-box stop                  # Stop service
+sing-box restart               # Restart service
+sing-box update                # Update script
+```
+
+## Help
 
 Usage: `sing-box help`
 
@@ -111,8 +165,18 @@ Other:
    bin [...]                                       Run sing-box commands, e.g.: sing-box bin help
    [...] [...]                                     Compatible with most sing-box commands, e.g.: sing-box generate uuid
    h, help                                         Show this help screen
-
-Use del, ddel with caution, these options will directly delete configurations; no confirmation required
-Feedback) https://github.com/233boy/sing-box/issues
-Documentation) https://233boy.com/sing-box/sing-box-script/
 ```
+
+Use `del` and `ddel` with caution. These options delete configurations directly without confirmation.
+
+## Links
+
+- **English Repository:** https://github.com/ib729/singbox-script
+- **Original (Chinese) Repository:** https://github.com/233boy/sing-box
+- **Official sing-box:** https://sing-box.sagernet.org/
+- **Original (Chinese) Documentation:** https://233boy.com/sing-box/sing-box-script/
+
+## Acknowledgements
+
+- [233boy](https://github.com/233boy) 
+- [Ivan Belousov](https://github.com/ib729) 
