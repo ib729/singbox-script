@@ -1463,6 +1463,14 @@ update() {
         err "Unrecognized ($1), use: $is_core update [core | sh | caddy] [ver]"
         ;;
     esac
+    if [[ $is_update_name == "sh" ]]; then
+        [[ $2 && $2 != "main" ]] && err "Script update uses the main branch; omit the version."
+        is_new_ver="main"
+        msg "\nUpdating $is_show_name from main branch.\n"
+        download $is_update_name $is_new_ver
+        msg "Update successful, current $is_show_name version: $(_green $is_new_ver)\n"
+        return
+    fi
     [[ $2 ]] && is_new_ver=v${2#v}
     [[ $is_run_ver == $is_new_ver ]] && {
         msg "\nCustom version matches current $is_show_name version, no update needed.\n"
